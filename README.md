@@ -14,4 +14,8 @@ sudo apt-get install oracle-java8-set-default
 
 # check
 java -version
+
+# Maven
+sudo apt update
+sudo apt install maven
 ```
