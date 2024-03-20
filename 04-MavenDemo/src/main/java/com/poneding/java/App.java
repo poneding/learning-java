@@ -1,66 +1,43 @@
 package com.poneding.java;
 
-import java.util.Scanner;
-import com.poneding.java.ComplexNumber;
-import com.poneding.java.TestArray;
+import java.io.IOException;
+import java.io.OutputStream;
+import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpHandler;
+import com.sun.net.httpserver.HttpExchange;
 
-/**
- * Hello world!
- *
- */
-public class App 
-{
-    // public static void main( String[] args )
-    // {
-    //     System.out.println( "Hello World!" );
-    // }
+public class App {
+    public static void main(String[] args) throws IOException {
+        int serverPort = 8000; // 服务器端口号
 
-    public static void main(String[] args) {
-        go();
+        // 创建HTTP服务器，并绑定到指定端口
+        HttpServer server = HttpServer.create(new java.net.InetSocketAddress(serverPort), 0);
+
+        // 创建一个上下文为 "/" 的处理器，并指定处理方法为 HelloHandler
+        server.createContext("/", new HelloHandler());
+
+        // 启动服务器
+        server.start();
+
+        System.out.println("Server started on port " + serverPort);
     }
 
-    public static int gcd(int a, int b) {
-        if (b == 0)
-            return a;
-        return gcd(b, a % b);
-    }
+    // 处理 HTTP 请求的处理器类
+    static class HelloHandler implements HttpHandler {
+        @Override
+        public void handle(HttpExchange exchange) throws IOException {
+            // 设置响应头
+            exchange.getResponseHeaders().set("Content-Type", "text/plain");
 
-    public static void go(){
-        int num1 = 48;
-        int num2 = 60;
+            // 设置响应码为200（表示成功）
+            exchange.sendResponseHeaders(200, 0);
 
-        int res = gcd(num1, num2);
-        System.out.println("GCD of " + num1 + " and " + num2 + " is: " + res);
+            // 获取输出流，向客户端发送响应内容
+            OutputStream responseBody = exchange.getResponseBody();
+            responseBody.write("Hello, World!".getBytes());
 
-        ComplexNumber c1 = new ComplexNumber(4, 5);
-        ComplexNumber c2 = new ComplexNumber(10, 5);
-
-        System.out.print("First Complex number: ");
-        c1.showC();
-        System.out.print("Second Complex number: ");
-        c2.showC();
-
-        ComplexNumber result = ComplexNumber.add(c1, c2);
-        System.out.print("Sum of complex numbers: ");
-        result.showC();
-
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter the number of elements in the array: ");
-        int n = sc.nextInt();
-
-        int[] arr = new int[n];
-        for (int i = 0; i < arr.length; i++) {
-            System.out.print("Enter element " + (i + 1) + ": ");
-            arr[i] = sc.nextInt();
+            // 关闭输出流，标记响应结束
+            responseBody.close();
         }
-
-        TestArray obj = new TestArray();
-        int maxVal = obj.MAX(arr);
-        int minVal = obj.MIN(arr);
-
-        int difference = maxVal - minVal;
-        System.out.println("Maximum value in the array: " + maxVal);
-        System.out.println("Minimum value in the array: " + minVal);
-        System.out.println("Difference between max and min: " + difference);
     }
 }

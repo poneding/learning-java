@@ -1,9 +1,45 @@
+# 04-MavenDemo
+
+## init
+
+```bash
+mvn archetype:generate -DgroupId=com.poneding.java -DartifactId=04-MavenDemo -DarchetypeArtifactId=maven-archetype-quickstart -DarchetypeVersion=1.4 -DinteractiveMode=false
+
+cd 04-MavenDemo
+```
+
+## package
+
+Add build plugin configuration
+
+```xml
+        <plugin>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.0.2</version>
+          <configuration>
+            <archive>
+                <manifest>
+                    <addClasspath>true</addClasspath>
+                    <classpathPrefix>lib/</classpathPrefix>
+                    <mainClass>com.poneding.java.App</mainClass>
+                </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+```
+
+Package
+
+```bash
+mvn package
+```
+
 ## classfinal
 
 Machine Code
 
 ```bash
-java -jar classfinal-fatjar.jar -C
+java -jar classfinal-fatjar-1.2.1.jar -C
 ```
 
 Encrypt jar
