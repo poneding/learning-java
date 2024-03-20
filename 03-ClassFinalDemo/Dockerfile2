@@ -1,0 +1,7 @@
+FROM openjdk:8
+
+WORKDIR /app
+
+COPY ClassFinalDemo-encrypted.jar .
+
+ENTRYPOINT ["/bin/bash", "-c", "java -jar ClassFinalDemo-encrypted.jar"]
